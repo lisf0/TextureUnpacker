@@ -52,14 +52,14 @@ namespace TextureUnpacker
     {
         public List<AtlasFile> List_atlasFile = new List<AtlasFile>();
 
-		public Atlas() { }
-		public Atlas(String filepath) { load(filepath); }
+        public Atlas() { }
+        public Atlas(String filepath) { load(filepath); }
 
 
         public void load(String path)
         {
             System.IO.StreamReader file = new System.IO.StreamReader(path);
-            
+
             String str, p_name;
             int lineindex = 0;
             int page = 0;
@@ -73,7 +73,7 @@ namespace TextureUnpacker
                 // empty line mean new Region
                 if (str == "")
                 {
-					continue;
+                    continue;
                 }
                 // first line is Name
                 else if (lineindex == 0)
@@ -115,7 +115,7 @@ namespace TextureUnpacker
                     p_name = getPropertiesName(str);
                     if (p_name == "rotate")
                     {
-                        if (getStringValue(str)[0]=="false")
+                        if (getStringValue(str)[0] == "false")
                         {
                             atlasRegion.rotate = false;
                         }
@@ -161,7 +161,7 @@ namespace TextureUnpacker
                     }
                     else
                     {
-                        if (regionNum!=0)
+                        if (regionNum != 0)
                         {
                             atlasFile.region.Add(atlasRegion);
                         }
@@ -213,7 +213,15 @@ namespace TextureUnpacker
                             new Rectangle(region.xy, new Size(region.size.Height, region.size.Width)),
                             GraphicsUnit.Pixel);
                     }
-                    bmp.Save(export_path + "\\" + region.name + ".png");
+
+                    String filePath = export_path + "\\" + region.name.Replace("/", "\\") + ".png";
+                    String fileDir = filePath.Substring(0, filePath.LastIndexOf("\\"));
+                    if (!System.IO.Directory.Exists(fileDir))
+                    {
+                        System.IO.Directory.CreateDirectory(fileDir);
+                    }
+
+                    bmp.Save(filePath);
                 }
             }
             else
@@ -225,10 +233,10 @@ namespace TextureUnpacker
 
                     if (!region.rotate)
                     {
-                         g.DrawImage(img,
-                             new Rectangle(0, 0, region.size.Width, region.size.Height),
-                             new Rectangle(region.xy, region.size),
-                             GraphicsUnit.Pixel);
+                        g.DrawImage(img,
+                            new Rectangle(0, 0, region.size.Width, region.size.Height),
+                            new Rectangle(region.xy, region.size),
+                            GraphicsUnit.Pixel);
                     }
                     else
                     {
@@ -239,7 +247,14 @@ namespace TextureUnpacker
                             new Rectangle(region.xy, new Size(region.size.Height, region.size.Width)),
                             GraphicsUnit.Pixel);
                     }
-                    bmp.Save(export_path + "\\" + region.name + ".png");
+
+                    String filePath = export_path + "\\" + region.name.Replace("/", "\\") + ".png";
+                    String fileDir = filePath.Substring(0, filePath.LastIndexOf("\\"));
+                    if (!System.IO.Directory.Exists(fileDir))
+                    {
+                        System.IO.Directory.CreateDirectory(fileDir);
+                    }
+                    bmp.Save(filePath);
                 }
             }
             return true;
@@ -248,7 +263,7 @@ namespace TextureUnpacker
         private String getPropertiesName(String str)
         {
             int index = str.IndexOf(':');
-            return index!=-1? str.Substring(0, index).Trim() : str.Trim();
+            return index != -1 ? str.Substring(0, index).Trim() : str.Trim();
         }
 
         private List<int> getIntValue(String str)
@@ -256,7 +271,7 @@ namespace TextureUnpacker
             List<int> values = new List<int>();
             String[] vs = getStringValue(str);
 
-            foreach( String s in vs  )
+            foreach (String s in vs)
             {
                 int v = Int32.Parse(s);
                 values.Add(v);
