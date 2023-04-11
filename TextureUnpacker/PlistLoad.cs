@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.IO;
 using System.Drawing;
+using System.Windows.Forms;
 
 namespace TextureUnpacker
 {
@@ -117,7 +118,13 @@ namespace TextureUnpacker
                         bmp.RotateFlip(RotateFlipType.Rotate270FlipNone);
                     }
 
-                    bmp.Save(export_path + "\\" + frame.name);
+
+                    String file_name = frame.name;
+                    if (!file_name.EndsWith(".png") && !file_name.EndsWith(".jpg"))
+                    {
+                        file_name += ".png";
+                    }
+                    bmp.Save(export_path + "\\" + file_name);
 				}
 			}
 			else
@@ -147,7 +154,13 @@ namespace TextureUnpacker
 						bmp.RotateFlip(RotateFlipType.Rotate270FlipNone);
 					}
 
-					bmp.Save(export_path + "\\" + frame.name);
+					String file_name = frame.name;
+					if (!file_name.EndsWith(".png") && !file_name.EndsWith(".jpg"))
+					{
+						file_name += ".png";
+					}
+
+					bmp.Save(export_path + "\\" + file_name);
 				}
 			}
 			return true;
@@ -197,7 +210,7 @@ namespace TextureUnpacker
 				Dictionary<string, XmlNode> metadata = tree_to_dict(dict["metadata"]);
 				plistFile.metadata.format = Int32.Parse(metadata["format"].InnerText);
 				plistFile.metadata.realTextureFileName = metadata["realTextureFileName"].InnerText;
-				plistFile.metadata.smartupdate = metadata["smartupdate"].InnerText;
+				//plistFile.metadata.smartupdate = metadata["smartupdate"].InnerText;
 				plistFile.metadata.textureFileName = metadata["textureFileName"].InnerText;
 
 				List<int> li = to_list(metadata["size"].InnerText);

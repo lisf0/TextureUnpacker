@@ -126,8 +126,8 @@ namespace TextureUnpacker
 				return;
 
 			String path = path1;
-			path = path.Substring(0, path.LastIndexOf(@"\")).Trim();
-			path = path + "\\export";
+			path = path.Substring(0, path.LastIndexOf(@".")).Trim();
+			path = path + "_export";
 
 			//如果不存在就创建file文件夹
 			if (Directory.Exists(path) == false)
